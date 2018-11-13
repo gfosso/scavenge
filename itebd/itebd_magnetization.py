@@ -8,11 +8,13 @@ from scipy import integrate
 from scipy.linalg import expm 
 
 # First define the parameters of the model / simulation
-J=-1.0; chi=100; d=2; delta=0.01; N=1000;
+J= 1.0; chi=100; d=2; delta=0.01; N=1000;g=0
 B=[];s=[]
 for i in range(2):
-	B.append(np.zeros([2,1,1])); B[-1][0,0,0]=1
-	s.append(np.ones([1]))
+	#B.append(np.zeros([2,1,1])); B[-1][0,0,0]=1
+	#s.append(np.ones([1]))
+        B.append(np.random.rand(2,10,10))
+        s.append(np.random.rand(10))
 
 # Generate the two-site time evolution operator
 H_bond = np.array( [[J,-g/2,-g/2,0], [-g/2,-J,0,-g/2], [-g/2,0,-J,-g/2], [0,-g/2,-g/2,J]] )
@@ -50,7 +52,7 @@ for step in range(0, N):
 		
 		B[ic] = np.transpose(np.reshape(Z,(chi2,d,chic)),(1,0,2))
 
-# Get the bond energies
+# Get the magnetization
 sz=np.array([[1.,0.],[0.,-1,]])
 mag=[]
 for i_bond in range(2):
@@ -58,7 +60,16 @@ for i_bond in range(2):
 	C = np.tensordot(sB,sz,axes=(1,0))
 	sB=np.conj(sB)
 	mag.append(np.squeeze(np.tensordot(sB,C,axes=([0,2,1],[0,1,2]))).item()) 
-print "sigmazeta =", np.mean(mag)
+print("sigmazeta =", np.mean(mag))
+# Get the bond energies
+E=[]
+for i_bond in range(2):
+	BB = np.tensordot(B[i_bond],B[np.mod(i_bond+1,2)],axes=(2,1))
+	sBB = np.tensordot(np.diag(s[np.mod(i_bond-1,2)]),BB,axes=(1,1))
+	C = np.tensordot(sBB,np.reshape(H_bond,[d,d,d,d]),axes=([1,2],[2,3]))
+	sBB=np.conj(sBB)
+	E.append(np.squeeze(np.tensordot(sBB,C,axes=([0,3,1,2],[0,1,2,3]))).item()) 
+print("E_iTEBD =", np.mean(E))
 #f = lambda k,g : -2*np.sqrt(1+g**2-2*g*np.cos(k))/np.pi/2.
 #E0_exact = integrate.quad(f, 0, np.pi, args=(g,))[0]
 #print "E_exact =", E0_exact
