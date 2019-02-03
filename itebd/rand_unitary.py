@@ -1,19 +1,12 @@
 import numpy as np
 import scipy as sp
-import scipy.linalg
 
 
-def  rand_unitary():
-    x=[]
-    q=[]
-    r=[]
+def  rand_unitary(n):
 
-    a=np.random.randn(4,4)
-    b=np.random.randn(4,4)
-
-    x = a +  complex(0,1)*b
-
-    q, r = scipy.linalg.qr(x)
-
-    r=np.diag(np.diag(r)/np.abs(np.diag(r)))
+    x =( sp.randn(n,n) +  1j*sp.randn(n,n))/np.sqrt(2.0)
+    q,r = np.linalg.qr(x)
+    d=sp.diagonal(r)
+    ph=d/sp.absolute(d)
+    q=np.multiply(q,ph,q)
     return q
