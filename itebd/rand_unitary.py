@@ -1,19 +1,21 @@
 import numpy as np
 import scipy as sp
-import scipy.linalg
+from scipy.linalg import block_diag
+
+#random unitary Haar distribuited
+def  rand_unitary(n):
+	x=(sp.randn(n,n) + 1j*sp.randn(n,n))/np.sqrt(2.0)
+	q, r = np.linalg.qr(x)
+	d=sp.diagonal(r)
+	ph=d/sp.absolute(d)
+	q=np.multiply(q,ph,q)
+	return q
 
 
-def  rand_unitary():
-    x=[]
-    q=[]
-    r=[]
+#random unitary conserving U(1) charge
+def rand_u1_unitary(q):
+	m=rand_unitary(1)
+	for i in range(2*(q-1)-1,-1,-1):
+		m=block_diag(m,rand_unitary(q-np.abs(i+1-q)))
 
-    a=np.random.randn(4,4)
-    b=np.random.randn(4,4)
-
-    x = a +  complex(0,1)*b
-
-    q, r = scipy.linalg.qr(x)
-
-    r=np.diag(np.diag(r)/np.abs(np.diag(r)))
-    return q
+	return m
