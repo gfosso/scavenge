@@ -51,7 +51,7 @@ def evol(B1,B2,s1,s2,U,chi,d):
 	theta = np.reshape(np.transpose(theta,(1,0,2,3)),(d*chia,d*chic)) # ip a jp b
 	# Schmidt decomposition #
 	X, Y, Z = np.linalg.svd(theta,full_matrices=0)
-	chi2 = np.min([np.sum(Y>10.**(-10)), chi])	
+	chi2 = np.min([np.sum(Y>10.**(-8)), chi])	
 	piv = np.zeros(len(Y), np.bool)
 	piv[(np.argsort(Y)[::-1])[:chi2]] = True
 	Y = Y[piv]; invsq = np.sqrt(sum(Y**2))
