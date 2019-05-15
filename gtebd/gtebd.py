@@ -7,14 +7,16 @@ from mps import *
 import csv,getopt
 import sys
 
-q=4;chi=200;N=20
+q=4;chi=100;N=20
 
 
 #Domain wall initial condition, max charge vs min charge
 entanglement=np.zeros([N])
 dev_ent=np.zeros([N])
-mag=np.zeros([N])
-tentativi=100
+mag=[]
+for i in range(N):
+	mag.append(np.zeros([2+2*i]))
+tentativi=10
 for i in range(tentativi):
 	B=[]
 	s=[]
@@ -27,12 +29,10 @@ for i in range(tentativi):
 	U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
 	l=2 #initial length
 	for step in range(N):
-            m=0
             for i_bond in range(l):
-                m+=charge(s[i_bond],B[i_bond],d=q)
-            mag[step]+=m/l
-            entanglement[step]+=-sum((s[l//2-1]*s[l//2-1])*np.log(s[l//2-1]*s[l//2-1]))
-            dev_ent[step]+= (sum((s[l//2-1]*s[l//2-1])*np.log(s[l//2-1]*s[l//2-1])))**2
+                mag[step][i_bond]+=charge(s[i_bond],B[i_bond],d=q)
+            entanglement[step]+=-sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2]))
+            dev_ent[step]+= (sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2])))**2
             for i_bond in range(0,l,2):#only even numbers
          #       U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
                 B[i_bond],B[i_bond+1],s[i_bond+1]=evol(B[i_bond],B[i_bond+1],s[i_bond],s[i_bond+1],U=U,chi=chi,d=q)
@@ -51,13 +51,13 @@ for i in range(tentativi):
 #with open('gesudev.txt','w') as f:
 #    csvwriter=csv.writer(f)
 #    csvwriter.writerows(entanglement)
-plt.plot(mag/tentativi)
+#plt.plot(mag/tentativi)
 #x=np.linspace(0,N)
 #plt.plot(x**(0.5))
 #plt.plot(x**(1./2.))
-#plt.plot(np.arange(N)**(1/2),entanglement/tentativi)
+plt.plot(entanglement/tentativi)
 #plt.plot(np.arange(N)**(0.5),entanglement/tentativi)
-#plt.plot(np.arange(N)**(0.5),np.sqrt(dev_ent/tentativi-(entanglement/tentativi)**2))
+plt.plot(np.sqrt(dev_ent/tentativi-(entanglement/tentativi)**2))
 #plt.plot((1/3)*np.log(x))
 #plt.yscale("log")
 #plt.xscale("log")
