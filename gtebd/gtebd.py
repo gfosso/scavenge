@@ -7,7 +7,7 @@ from mps import *
 import csv,getopt
 import sys
 
-q=4;chi=100;N=60
+q=4;chi=200;N=20
 
 
 #Domain wall initial condition, max charge vs min charge
@@ -29,12 +29,12 @@ for i in range(tentativi):
 	for step in range(N):
             m=0
             for i_bond in range(l):
-                m+=magnetization(s[i_bond],B[i_bond],d=q)
+                m+=charge(s[i_bond],B[i_bond],d=q)
             mag[step]+=m/l
             entanglement[step]+=-sum((s[l//2-1]*s[l//2-1])*np.log(s[l//2-1]*s[l//2-1]))
             dev_ent[step]+= (sum((s[l//2-1]*s[l//2-1])*np.log(s[l//2-1]*s[l//2-1])))**2
             for i_bond in range(0,l,2):#only even numbers
-                #U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
+         #       U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
                 B[i_bond],B[i_bond+1],s[i_bond+1]=evol(B[i_bond],B[i_bond+1],s[i_bond],s[i_bond+1],U=U,chi=chi,d=q)
             B.insert(0,np.zeros([q,1,1]))
             B.append(np.zeros([q,1,1]))
@@ -44,20 +44,20 @@ for i in range(tentativi):
             B[-1][q-1,0,0]=1
             l+=2
     
-np.savetxt('q4gesuent.txt',entanglement/tentativi,delimiter=',')
-np.savetxt('q4gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
+#np.savetxt('q4gesuent.txt',entanglement/tentativi,delimiter=',')
+#np.savetxt('q4gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
 #        csvwriter=csv.writer(f)
 #        csvwriter.writerows(dev_ent)
 #with open('gesudev.txt','w') as f:
 #    csvwriter=csv.writer(f)
 #    csvwriter.writerows(entanglement)
-#plt.plot(mag/tentativi)
+plt.plot(mag/tentativi)
 #x=np.linspace(0,N)
 #plt.plot(x**(0.5))
 #plt.plot(x**(1./2.))
 #plt.plot(np.arange(N)**(1/2),entanglement/tentativi)
-plt.plot(entanglement/tentativi)
-plt.plot(np.sqrt(dev_ent/tentativi-(entanglement/tentativi)**2))
+#plt.plot(np.arange(N)**(0.5),entanglement/tentativi)
+#plt.plot(np.arange(N)**(0.5),np.sqrt(dev_ent/tentativi-(entanglement/tentativi)**2))
 #plt.plot((1/3)*np.log(x))
 #plt.yscale("log")
 #plt.xscale("log")

@@ -11,6 +11,15 @@ def magnetization(s,B,d):
     mag = np.real( np.tensordot(C,sz,axes=([0,1],[0,1])))
     return mag
 
+def charge(s,B,d):
+    sz=np.diag(np.arange(d))
+ #   sz=np.array([[0,1],[1,0]])
+    mag=0.
+    sB = np.tensordot(np.diag(s),B,axes=(1,1))
+    C=np.tensordot(sB,np.conj(sB),axes=([0,2],[0,2]))
+    mag = np.real( np.tensordot(C,sz,axes=([0,1],[0,1])))
+    return mag
+
 #correlator between sz in different positions
 def corrszsz(dist,s,B,d):
     sz=np.diag([Sz(conf,0) for conf in range(0,d)])
