@@ -7,14 +7,14 @@ from mps import *
 import csv,getopt
 import sys
 
-q=2;chi=100;N=50
+q=4;chi=100;N=60
 
 
 #Domain wall initial condition, max charge vs min charge
 entanglement=np.zeros([N])
 dev_ent=np.zeros([N])
 mag=np.zeros([N])
-tentativi=300
+tentativi=100
 for i in range(tentativi):
 	B=[]
 	s=[]
@@ -44,21 +44,21 @@ for i in range(tentativi):
             B[-1][q-1,0,0]=1
             l+=2
     
-np.savetxt('gesuent.txt',entanglement/tentativi,delimiter=',')
-np.savetxt('gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
+np.savetxt('q4gesuent.txt',entanglement/tentativi,delimiter=',')
+np.savetxt('q4gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
 #        csvwriter=csv.writer(f)
 #        csvwriter.writerows(dev_ent)
 #with open('gesudev.txt','w') as f:
 #    csvwriter=csv.writer(f)
 #    csvwriter.writerows(entanglement)
 #plt.plot(mag/tentativi)
-x=np.linspace(0,N)
+#x=np.linspace(0,N)
 #plt.plot(x**(0.5))
 #plt.plot(x**(1./2.))
 #plt.plot(np.arange(N)**(1/2),entanglement/tentativi)
 plt.plot(entanglement/tentativi)
 plt.plot(np.sqrt(dev_ent/tentativi-(entanglement/tentativi)**2))
-plt.plot((1/3)*np.log(x))
+#plt.plot((1/3)*np.log(x))
 #plt.yscale("log")
 #plt.xscale("log")
 plt.show()
