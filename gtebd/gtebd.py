@@ -7,7 +7,7 @@ from mps import *
 import csv,getopt
 import sys
 
-q=4;chi=100;N=20
+q=3;chi=100;N=20
 
 
 #Domain wall initial condition, max charge vs min charge
@@ -34,7 +34,7 @@ for i in range(tentativi):
             entanglement[step]+=-sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2]))
             dev_ent[step]+= (sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2])))**2
             for i_bond in range(0,l,2):#only even numbers
-         #       U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
+          #      U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
                 B[i_bond],B[i_bond+1],s[i_bond+1]=evol(B[i_bond],B[i_bond+1],s[i_bond],s[i_bond+1],U=U,chi=chi,d=q)
             B.insert(0,np.zeros([q,1,1]))
             B.append(np.zeros([q,1,1]))

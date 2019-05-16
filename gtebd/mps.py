@@ -13,7 +13,6 @@ def magnetization(s,B,d):
 
 def charge(s,B,d):
     sz=np.diag(np.arange(d))
- #   sz=np.array([[0,1],[1,0]])
     mag=0.
     sB = np.tensordot(np.diag(s),B,axes=(1,1))
     C=np.tensordot(sB,np.conj(sB),axes=([0,2],[0,2]))
@@ -52,26 +51,26 @@ def corrszsz(dist,s,B,d):
 
 #time evolution
 def evol(B1,B2,s1,s2,U,chi,d):
-	chia = B1.shape[1]; chic = B2.shape[2]
-	# Construct theta matrix and time evolution #
-	theta = np.tensordot(B1,B2,axes=(2,1)) # i a j b
-	theta = np.tensordot(U,theta,axes=([2,3],[0,2])) # ip jp a b 
-	theta = np.tensordot(np.diag(s1),theta,axes=([1,2])) # a ip jp b 
-	theta = np.reshape(np.transpose(theta,(1,0,2,3)),(d*chia,d*chic)) # ip a jp b
-	# Schmidt decomposition #
-	X, Y, Z = np.linalg.svd(theta,full_matrices=0)
-	chi2 = np.min([np.sum(Y>10.**(-15)), chi])	
-	piv = np.zeros(len(Y), np.bool)
-	piv[(np.argsort(Y)[::-1])[:chi2]] = True
-	Y = Y[piv]; invsq = np.sqrt(sum(Y**2))
-	X = X[:,piv] 
-	Z = Z[piv,:]
-	# Obtain the new values for B and s #
-	s2 = Y/invsq 
-	X=np.reshape(X,(d,chia,chi2))
-	X = np.transpose(np.tensordot(np.diag(s1**(-1)),X,axes=(1,1)),(1,0,2))
-	B1 = np.tensordot(X, np.diag(s2),axes=(2,0))
-	B2 = np.transpose(np.reshape(Z,(chi2,d,chic)),(1,0,2))
+        chia = B1.shape[1]; chic = B2.shape[2]
+        # Construct theta matrix and time evolution #
+        theta = np.tensordot(B1,B2,axes=(2,1)) # i a j b
+        theta = np.tensordot(U,theta,axes=([2,3],[0,2])) # ip jp a b 
+        theta = np.tensordot(np.diag(s1),theta,axes=([1,2])) # a ip jp b 
+        theta = np.reshape(np.transpose(theta,(1,0,2,3)),(d*chia,d*chic)) # ip a jp b
+        # Schmidt decomposition #
+        X, Y, Z = np.linalg.svd(theta,full_matrices=0)
+        chi2 = np.min([np.sum(Y>10.**(-15)), chi])	
+        piv = np.zeros(len(Y), np.bool)
+        piv[(np.argsort(Y)[::-1])[:chi2]] = True
+        Y = Y[piv]; invsq = np.sqrt(sum(Y**2))
+        X = X[:,piv] 
+        Z = Z[piv,:]
+        # Obtain the new values for B and s #
+        s2 = Y/invsq 
+        X=np.reshape(X,(d,chia,chi2))
+        X = np.transpose(np.tensordot(np.diag(s1**(-1)),X,axes=(1,1)),(1,0,2))
+        B1 = np.tensordot(X, np.diag(s2),axes=(2,0))
+        B2 = np.transpose(np.reshape(Z,(chi2,d,chic)),(1,0,2))
 
-	return B1,B2,s2
+        return B1,B2,s2
 
