@@ -7,7 +7,7 @@ from mps import *
 import csv,getopt
 import sys
 
-q=3;chi=100;N=20
+q=3;chi=300;N=25
 
 
 #Domain wall initial condition, max charge vs min charge
@@ -16,7 +16,7 @@ dev_ent=np.zeros([N])
 mag=[]
 for i in range(N):
 	mag.append(np.zeros([2+2*i]))
-tentativi=10
+tentativi=20
 for i in range(tentativi):
 	B=[]
 	s=[]
@@ -44,8 +44,8 @@ for i in range(tentativi):
             B[-1][q-1,0,0]=1
             l+=2
     
-#np.savetxt('q4gesuent.txt',entanglement/tentativi,delimiter=',')
-#np.savetxt('q4gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
+np.savetxt('q3gesuent.txt',entanglement/tentativi,delimiter=',')
+np.savetxt('q3gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
 #        csvwriter=csv.writer(f)
 #        csvwriter.writerows(dev_ent)
 #with open('gesudev.txt','w') as f:

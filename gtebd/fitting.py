@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 #x = np.array([5, 15, 25, 35, 45, 55])
 #y = np.array([5, 15, 25, 35, 45, 55])
-y = np.loadtxt('gesuent.txt')[10:50]
-z=np.arange(0,50,1)[10:50]
+y = np.loadtxt('q3gesuent.txt')[15:25]
+z=np.arange(0,50,1)[15:25]
 x = np.log(z)
-sigmaq=np.loadtxt('gesuvarent.txt')[10:50]
+sigmaq=np.loadtxt('q3gesuvarent.txt')[15:25]
 plt.plot(z,y,'o',label='<S>')
 plt.plot(z,sigmaq,'o',label='$<S^2>-<S>^2$')
 
