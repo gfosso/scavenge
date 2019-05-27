@@ -7,7 +7,7 @@ from mps import *
 import csv,getopt
 import sys
 
-q=2;chi=300;N=40
+q=3;chi=500;N=30
 
 
 #Domain wall initial condition, max charge vs min charge
@@ -44,12 +44,12 @@ for i in range(tentativi):
             B[-1][q-1,0,0]=1
             l+=2
     
-np.savetxt('q2gesuent.txt',entanglement/tentativi,delimiter=',')
-np.savetxt('q2gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
+np.savetxt('q3gesuent.txt',entanglement/tentativi,delimiter=',')
+np.savetxt('q3gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
 #np.savetxt('q2mag',mag,delimiter=',')
 #        csvwriter=csv.writer(f)
 #        csvwriter.writerows(dev_ent)
-with open('q2mag.txt','w') as f:
+with open('q3mag.txt','w') as f:
     csvwriter=csv.writer(f)
     csvwriter.writerows(mag)
 #plt.plot(mag/tentativi)
