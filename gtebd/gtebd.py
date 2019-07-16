@@ -7,7 +7,7 @@ from mps import *
 import csv,getopt
 import sys
 
-q=3;chi=500;N=30
+q=2;chi=1000;N=50
 
 
 #Domain wall initial condition, max charge vs min charge
@@ -16,7 +16,7 @@ dev_ent=np.zeros([N])
 mag=[]
 for i in range(N):
 	mag.append(np.zeros([2+2*i]))
-tentativi=20
+tentativi=30
 for i in range(tentativi):
 	B=[]
 	s=[]
@@ -34,7 +34,7 @@ for i in range(tentativi):
             entanglement[step]+=-sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2]))
             dev_ent[step]+= (sum((s[l//2]*s[l//2])*np.log(s[l//2]*s[l//2])))**2
             for i_bond in range(0,l,2):#only even numbers
-          #      U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
+#                U=np.reshape(rand_u1_unitary(q),(q,q,q,q))
                 B[i_bond],B[i_bond+1],s[i_bond+1]=evol(B[i_bond],B[i_bond+1],s[i_bond],s[i_bond+1],U=U,chi=chi,d=q)
             B.insert(0,np.zeros([q,1,1]))
             B.append(np.zeros([q,1,1]))
@@ -44,12 +44,12 @@ for i in range(tentativi):
             B[-1][q-1,0,0]=1
             l+=2
     
-np.savetxt('q3gesuent.txt',entanglement/tentativi,delimiter=',')
-np.savetxt('q3gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
-#np.savetxt('q2mag',mag,delimiter=',')
+np.savetxt('50T30q2gesuent.txt',entanglement/tentativi,delimiter=',')
+np.savetxt('50T30q2gesuvarent.txt',dev_ent/tentativi -(entanglement/tentativi)**2,delimiter=',')
+#np.savetxt('1000chiq2mag',mag,delimiter=',')
 #        csvwriter=csv.writer(f)
 #        csvwriter.writerows(dev_ent)
-with open('q3mag.txt','w') as f:
+with open('50T30q2mag.txt','w') as f:
     csvwriter=csv.writer(f)
     csvwriter.writerows(mag)
 #plt.plot(mag/tentativi)
